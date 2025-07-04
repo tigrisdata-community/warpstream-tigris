@@ -1,6 +1,6 @@
 services:
   # VS Code workspace service
-  workspace:
+  warpstream-tigris:
     image: ghcr.io/tigrisdata-community/warpstream-tigris/devcontainer
     build:
       dockerfile: .devcontainer/Dockerfile

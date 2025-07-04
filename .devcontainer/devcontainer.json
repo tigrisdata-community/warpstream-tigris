@@ -4,7 +4,7 @@
   "name": "Dev",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
   "dockerComposeFile": ["../docker-compose.yaml", "./docker-compose.yaml"],
-  "service": "workspace",
+  "service": "warpstream-tigris",
   "workspaceFolder": "/workspace",
   "postStartCommand": "npm ci",
   "initializeCommand": "mkdir -p ${localEnv:HOME}${localEnv:USERPROFILE}/.local/share/atuin && mkdir -p ${localEnv:HOME}${localEnv:USERPROFILE}/.aws",
