@@ -1,5 +1,7 @@
 # Warpstream on Tigris
 
+![](./.img/ty-stream.jpg)
+
 [Warpstream](https://www.warpstream.com/) lets you store an unlimited amount of data in your message queues, but when you set it up with S3 or other object stores, you end up having to pay egress fees to read messages. Tigris is globally performant object storage without egress fees. When you combine the two, you get a bottomless durable message queue that lets you store however much you want without having to worry about where your data is.
 
 Before we get started, let’s cover the moving parts:
