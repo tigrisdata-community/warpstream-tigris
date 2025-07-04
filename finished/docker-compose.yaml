@@ -1,0 +1,11 @@
+services:
+  warp:
+    image: public.ecr.aws/warpstream-labs/warpstream_agent:latest
+    command:
+      - agent
+    environment:
+      WARPSTREAM_DISCOVERY_KAFKA_HOSTNAME_OVERRIDE: warp
+      WARPSTREAM_DISCOVERY_KAFKA_PORT_OVERRIDE: 9092
+      WARPSTREAM_REQUIRE_AUTHENTICATION: "false"
+    env_file:
+      - .env
