@@ -1,0 +1,19 @@
+services:
+  warp:
+    image: public.ecr.aws/warpstream-labs/warpstream_agent:latest
+    command:
+      - playground
+      - -advertiseHostnameStrategy
+      - custom
+      - -advertiseHostnameCustom
+      - warp
+    environment:
+      # this is a no-op as it will default on the custom advertised hostname defined above, but you can change this if you want to use a different hostname with Kafka
+      - WARPSTREAM_DISCOVERY_KAFKA_HOSTNAME_OVERRIDE=warp
+    healthcheck:
+      # Wait for the Agent to finish setting up the demo before marking it as healthy
+      # to delay the diagnose-connection command from running for a few seconds.
+      test: ["CMD", "sh", "-c", "sleep 10"]
+      interval: 5s
+      timeout: 15s
+      retries: 5

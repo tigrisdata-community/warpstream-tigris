@@ -3,9 +3,8 @@ services:
   workspace:
     image: ghcr.io/tigrisdata-community/warpstream-tigris/devcontainer
     build:
-      context: ..
       dockerfile: .devcontainer/Dockerfile
     volumes:
-      - ../:/workspace:cached
+      - ./:/workspace:cached
     # entrypoint: ["/usr/bin/sleep", "infinity"]
     user: vscode
