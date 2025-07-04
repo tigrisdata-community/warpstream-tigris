@@ -1,6 +1,6 @@
 # Warpstream on Tigris
 
-![](./.img/ty-stream.jpg)
+![A blue cartoon tiger riding a canoe down a river of data with a happy orca breaching the water next to him](./.img/ty-stream.jpg)
 
 [Warpstream](https://www.warpstream.com/) lets you store an unlimited amount of data in your message queues, but when you set it up with S3 or other object stores, you end up having to pay egress fees to read messages. Tigris is globally performant object storage without egress fees. When you combine the two, you get a bottomless durable message queue that lets you store however much you want without having to worry about where your data is.
 
@@ -23,7 +23,7 @@ Make sure you have the following installed on your computer:
 You will need the following accounts:
 
 - A Tigris account from [storage.new](https://storage.new).
-- A Warpstream account from \[[console.warpstream.com](http://console.warpstream.com)\](https://console.warpstream.com/login).
+- A Warpstream account from [console.warpstream.com](http://console.warpstream.com/login)
 
 ## Building a compose file
 
@@ -31,7 +31,7 @@ First, clone [tigrisdata-community/warpstream-tigris](https://github.com/tigrisd
 
 Take a look at the `docker-compose.yaml` file in the root of the repository:
 
-```
+```yaml
 services:
   warp:
     # Grab the latest copy of the warpstream agent for your computer
@@ -57,13 +57,13 @@ services:
 
 Open a new terminal in your development container and make sure Warpstream is up and running:
 
-```
+```text
 warpstream kcmd --bootstrap-host warp --type diagnose-connection
 ```
 
 This should return output like the following:
 
-```
+```text
 running diagnose-connection sub-command with bootstrap-host: warp and bootstrap-port: 9092
 
 
@@ -79,13 +79,13 @@ GroupCoordinator: warp:9092 (NodeID: 1547451680)
 
 Excellent\! Create a new topic with `warpstream kcmd`:
 
-```
+```text
 warpstream kcmd --bootstrap-host warp --type create-topic --topic hello
 ```
 
 This should return output like the following:
 
-```
+```text
 running create-topic sub-command with bootstrap-host: warp and bootstrap-port: 9092
 
 created topic "hello" successfully, topic ID: MQAAAAAAAAAAAAAAAAAAAA==
@@ -93,14 +93,14 @@ created topic "hello" successfully, topic ID: MQAAAAAAAAAAAAAAAAAAAA==
 
 Perfect\! Now let’s make it work with Tigris. Create a `.env` file in the root of the repository:
 
-```
+```sh
 cp .env.example .env
 code .env
 ```
 
 Create a new bucket at [storage.new](https://storage.new) in the Standard access tier. Copy its name down into your notes. Create a new [access key](https://storage.new/accesskey) with Editor permissions for that bucket. Copy the environment details into your `.env` file:
 
-```
+```sh
 ## Tigris credentials
 AWS_ACCESS_KEY_ID=tid_access_key_id
 AWS_SECRET_ACCESS_KEY=tsec_secret_access_key
@@ -118,13 +118,13 @@ Then fill in your Warpstream secrets from the console, you need the following:
 
 If your bucket is named `xe-warpstream-demo`, your bucket URL should look like this:
 
-```
+```text
 s3://xe-warpstream-demo?region=auto&endpoint=https://t3.storage.dev
 ```
 
 Altogether, put these credentials in your `.env` file:
 
-```
+```sh
 ## Warpstream credentials
 WARPSTREAM_AGENT_KEY=aks_agent_key
 WARPSTREAM_BUCKET_URL='s3://xe-warpstream-demo?region=auto&endpoint=https://t3.storage.dev'
@@ -134,7 +134,7 @@ WARPSTREAM_REGION=us-east-1
 
 Edit your `docker-compose.yaml` file to load the `.env` file and start warpstream in agent mode:
 
-```
+```yaml
 # docker-compose.yaml
 services:
   warp:
@@ -151,13 +151,13 @@ services:
 
 Then restart your development container with control/command shift-p “Dev Containers: Rebuild Container”. Test the health of your Broker:
 
-```
+```text
 warpstream kcmd --bootstrap-host warp --type diagnose-connection
 ```
 
 You should get output like this:
 
-```
+```text
 running diagnose-connection sub-command with bootstrap-host: warp and bootstrap-port: 9092
 
 
@@ -173,27 +173,27 @@ GroupCoordinator: warp:9092 (NodeID: 1415344910)
 
 It’s working\! Create a topic and publish some messages:
 
-```
+```text
 warpstream kcmd --bootstrap-host warp --type create-topic --topic hello
 warpstream kcmd --bootstrap-host warp --type produce --topic hello --records "world,,world"
 ```
 
 This should create the topic `hello` and two messages with `world` in them. You should get output like this:
 
-```
+```text
 result: partition:0 offset:0 value:"world"
 result: partition:0 offset:1 value:"world"
 ```
 
 Now let’s read them back:
 
-```
+```text
 warpstream kcmd --bootstrap-host warp --type fetch --topic hello --offset 0
 ```
 
 You should get output like this:
 
-```
+```text
 consuming topic:"hello" partition:0 offset:0
 result: partition:0 offset:0 key:"hello" value:"world"
 result: partition:0 offset:1 key:"hello" value:"world"
