@@ -1,0 +1,44 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/debian
+{
+  "name": "Dev",
+  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+  "dockerComposeFile": ["./docker-compose.yaml"],
+  "service": "workspace",
+  "workspaceFolder": "/workspace",
+  "postStartCommand": "npm ci && go mod download",
+  "initializeCommand": "mkdir -p ${localEnv:HOME}${localEnv:USERPROFILE}/.local/share/atuin && mkdir -p ${localEnv:HOME}${localEnv:USERPROFILE}/.aws",
+  "mounts": [
+    {
+      "type": "bind",
+      "source": "${localEnv:HOME}${localEnv:USERPROFILE}/.local/share/atuin",
+      "target": "/home/vscode/.local/share/atuin"
+    },
+    {
+      "type": "bind",
+      "source": "${localEnv:HOME}${localEnv:USERPROFILE}/.aws",
+      "target": "/home/vscode/.aws"
+    }
+  ],
+  "features": {
+    "ghcr.io/devcontainers/features/aws-cli:1.1.2": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "ms-azuretools.vscode-containers",
+        "golang.go",
+        "a-h.templ",
+        "redhat.vscode-yaml",
+        "ms-vsliveshare.vsliveshare",
+        "ms-azuretools.vscode-docker",
+        "dbaeumer.vscode-eslint",
+        "GitHub.vscode-github-actions",
+        "jinliming2.vscode-go-template",
+        "DavidAnson.vscode-markdownlint",
+        "ms-vscode.wordcount"
+      ]
+    }
+  }
+}
